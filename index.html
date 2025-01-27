@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חופשה באילת - משפחת שתיוי</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        .timer {
+            font-size: 2em;
+            color: #ff4500;
+            margin: 20px 0;
+        }
+
+        .image-container {
+            margin: 20px auto;
+        }
+
+        .image-container img {
+            width: 300px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .funny-note {
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>משפחת הסיס-שתיוי, החופשה שלכם מתקרבת!</h1>
+    <h2>עוד מעט החופשה ביו קורל מתחילה</h2>
+
+    <div class="timer" id="timer">טעינה...</div>
+
+    <div class="image-container">
+        <img src="https://www.u-splash.co.il/wp-content/uploads/2021/04/WP_USPLASH_41_MAR21_4000-2.jpg" alt="תמונה של חוף אילת">
+    </div>
+
+    <div class="funny-note">הכלב סימבה נשאר בבית לשמור על הממלכה 🐶</div>
+
+    <footer>
+        <p>מחכים לכם רגעים קסומים ונופים מהממים!</p>
+    </footer>
+
+    <script>
+        // תאריך החופשה
+        const vacationDate = new Date('2025-03-30T00:00:00');
+
+        function updateTimer() {
+            const now = new Date();
+            const timeLeft = vacationDate - now;
+
+            if (timeLeft <= 0) {
+                document.getElementById('timer').textContent = "החופשה כבר התחילה! תהנו!";
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById('timer').textContent = 
+                `${days} ימים, ${hours} שעות, ${minutes} דקות ו-${seconds} שניות`; 
+        }
+
+        function showNotification() {
+            if (Notification.permission === 'granted') {
+                const daysLeft = Math.ceil((vacationDate - new Date()) / (1000 * 60 * 60 * 24));
+                if (daysLeft > 0) {
+                    new Notification('התראה יומית', {
+                        body: `נשארו ${daysLeft} ימים לחופשה באילת!`,
+                        icon: 'https://iconape.com/wp-content/png_logo_vector/fattal-logo.png'
+                    });
+                }
+            }
+        }
+
+        // בקשת הרשאה להתראות
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        }
+
+        // עדכון הטיימר כל שניה
+        setInterval(updateTimer, 1000);
+
+        // שליחת התראה פעם ביום
+        setInterval(showNotification, 24 * 60 * 60 * 1000);
+
+        // עדכון ראשוני
+        updateTimer();
+    </script>
+</body>
+</html>
